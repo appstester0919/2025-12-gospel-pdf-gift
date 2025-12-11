@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="輸入名字，選擇性別，產生個人化 PDF 禮物">
+  <title>青年個人化 PDF 產生器</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h1>✨ 為福音朋友建立專屬PDF繪本 ✨</h1>
+        <p class="subtitle">輸入名字，產生專屬於福音對象的特別信息</p>
+      </div>
+
+      <form id="pdfForm" class="form">
+        <div class="form-group">
+          <label for="nameInput">輸入福音朋友的名字</label>
+          <input type="text" id="nameInput" placeholder="例如：小明" maxlength="10" required>
+          <span class="char-count"><span id="charCount">0</span>/10 字</span>
+        </div>
+
+        <div class="form-group">
+          <label>選擇版本</label>
+          <div class="gender-options">
+            <label class="gender-option">
+              <input type="radio" name="gender" value="boy" required>
+              <span class="gender-card">
+                <span class="gender-icon">👦</span>
+                <span class="gender-label">男生版</span>
+              </span>
+            </label>
+            <label class="gender-option">
+              <input type="radio" name="gender" value="girl" required>
+              <span class="gender-card">
+                <span class="gender-icon">👧</span>
+                <span class="gender-label">女生版</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" id="generateBtn" class="btn-generate">
+          <span class="btn-text">產生 PDF 下載</span>
+          <span class="btn-icon">📥</span>
+        </button>
+      </form>
+
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p class="loading-text">正在產生你的專屬 PDF...</p>
+        <p class="loading-subtext">首次載入字體可能需要幾秒鐘</p>
+      </div>
+
+      <div id="error" class="error hidden">
+        <p class="error-text"></p>
+      </div>
+
+      <div id="success" class="success hidden">
+        <p class="success-text"></p>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>神眼中你很特別 ❤️</p>
+    </footer>
+  </div>
+
+  <!-- PDF-lib and fontkit from CDN -->
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://unpkg.com/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
