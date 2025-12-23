@@ -13,9 +13,9 @@ const errorEl = document.getElementById('error');
 
 // Configuration
 const CONFIG = {
-  fontPath: 'ChenYuluoyan-Thin-Monospaced.ttf',
-  fontSize: 120,
-  textColor: { r: 1, g: 0.98, b: 0.94 }, // Off-white/cream color
+  fontPath: 'jf-openhuninn-2.0.ttf',
+  fontSize: 100,
+  textColor: { r: 0.63, g: 0.73, b: 0.86 }, // Light blue color (R160 G187 B220)
   lineHeight: 1.4,
   // Text position (top-left area, matching sample)
   textX: 50,
