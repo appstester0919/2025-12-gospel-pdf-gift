@@ -20,7 +20,7 @@ const CONFIG = {
   // Text position (top-left area, matching sample)
   textX: 50,
   textY: null, // Will be calculated based on page height
-  topMargin: 20,
+  topMargin: 180,
 };
 
 // Text template
@@ -91,16 +91,10 @@ async function handleSubmit(e) {
   e.preventDefault();
 
   const name = nameInput.value.trim();
-  const gender = document.querySelector('input[name="gender"]:checked')?.value;
 
   // Validation
   if (!name) {
     showError('請輸入名字');
-    return;
-  }
-
-  if (!gender) {
-    showError('請選擇版本');
     return;
   }
 
@@ -110,7 +104,7 @@ async function handleSubmit(e) {
     hideError();
     generateBtn.disabled = true;
 
-    await generatePDF(name, gender);
+    await generatePDF(name);
 
   } catch (error) {
     console.error('PDF generation failed:', error);
@@ -124,11 +118,11 @@ async function handleSubmit(e) {
 /**
  * Generate personalized PDF
  */
-async function generatePDF(name, gender) {
+async function generatePDF(name) {
   const { PDFDocument, rgb } = PDFLib;
 
-  // 1. Load the appropriate PDF template
-  const pdfPath = gender === 'boy' ? 'Boy.pdf' : 'Girl.pdf';
+  // 1. Load the PDF template
+  const pdfPath = 'Cat.pdf';
   const pdfResponse = await fetch(pdfPath);
   if (!pdfResponse.ok) {
     throw new Error(`無法載入 PDF 模板: ${pdfPath}`);
@@ -158,17 +152,21 @@ async function generatePDF(name, gender) {
   const firstPage = pages[0];
   const { width, height } = firstPage.getSize();
 
-  // 7. Prepare text lines with smart line breaking based on actual text width
-  const fullMessage = name + '，你知道神眼中你很特別嗎？';
+  // 7. Prepare text - only the name
   const fontSize = CONFIG.fontSize;
   // Calculate max width: use 90% of page width for more space
   const marginX = 30; // Small margin on each side
   const maxLineWidth = width - (marginX * 2);
-  const lines = breakTextIntoLines(fullMessage, customFont, fontSize, maxLineWidth);
+  const lines = breakTextIntoLines(name, customFont, fontSize, maxLineWidth);
 
-  // 8. Calculate positions
+  // 8. Calculate positions with multi-line centering
   const lineHeight = fontSize * CONFIG.lineHeight;
-  const startY = height - CONFIG.topMargin - fontSize;
+  // Target center Y position (fixed point for single line)
+  const targetCenterY = height - CONFIG.topMargin - fontSize / 2;
+  // Total height of all lines
+  const totalTextHeight = (lines.length - 1) * lineHeight + fontSize;
+  // Calculate start Y so that the center of all lines matches targetCenterY
+  const startY = targetCenterY + (totalTextHeight / 2) - fontSize;
 
   // 9. Draw each line (center-aligned)
   const textColor = rgb(CONFIG.textColor.r, CONFIG.textColor.g, CONFIG.textColor.b);
