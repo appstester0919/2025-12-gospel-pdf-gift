@@ -144,8 +144,10 @@ async function generatePDF(name) {
   // 4. Register fontkit for custom font support
   pdfDoc.registerFontkit(fontkit);
 
-  // 5. Embed the custom font
-  const customFont = await pdfDoc.embedFont(cachedFontBytes);
+  // 5. Embed the custom font (disable ligatures to fix 'ff' spacing issue)
+  const customFont = await pdfDoc.embedFont(cachedFontBytes, {
+    features: { liga: false, clig: false, dlig: false, hlig: false }
+  });
 
   // 6. Get the first page
   const pages = pdfDoc.getPages();
